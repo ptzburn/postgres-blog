@@ -2,6 +2,7 @@ import express from "express";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import { PORT } from "./config/env.js";
 import blogRouter from "./routes/blogRouter.js";
+import { connectToDatabase } from "./database/postgres.js";
 
 const app = express();
 
@@ -15,6 +16,11 @@ app.get("/api", (req, res) => {
   res.send("Welcome to the Blog API!");
 });
 
-app.listen(PORT || 3001, () => {
-  console.log(`Server is up and running at http://localhost:${PORT || 3001}`);
-});
+const start = async () => {
+  await connectToDatabase();
+  app.listen(PORT, () => {
+    console.log(`Server is up and running at http://localhost:${PORT || 3001}`);
+  });
+};
+
+start();

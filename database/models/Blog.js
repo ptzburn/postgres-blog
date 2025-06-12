@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../postgres.js";
+import { sequelize } from "../postgres.js";
 
-class Blog extends Model {}
+export class Blog extends Model {}
 Blog.init(
   {
     id: {
@@ -32,7 +32,3 @@ Blog.init(
     modelName: "blog",
   },
 );
-
-Blog.sync();
-
-export default Blog;

@@ -1,4 +1,4 @@
-import Blog from "../database/models/Blog.js";
+import { Blog } from "../database/models/index.js";
 
 export const getBlogs = async (req, res, next) => {
   try {
@@ -22,11 +22,19 @@ export const postBlog = async (req, res, next) => {
 
 export const deleteBlog = async (req, res, next) => {
   try {
-    const blogToDelete = await Blog.findByPk(req.params.id);
+    await req.blog.destroy();
 
-    await blogToDelete.destroy();
+    return res.status(200).json({ success: true, data: req.blog });
+  } catch (error) {
+    next(error);
+  }
+};
 
-    return res.status(200).json({ success: true, data: blogToDelete });
+export const updateLikes = async (req, res, next) => {
+  try {
+    req.blog.likes = req.body.likes;
+    await req.blog.save();
+    return res.status(200).json({ success: true, data: req.blog });
   } catch (error) {
     next(error);
   }

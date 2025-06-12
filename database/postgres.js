@@ -7,6 +7,16 @@ if (!DB_URI) {
   );
 }
 
-const sequelize = new Sequelize(DB_URI);
+export const sequelize = new Sequelize(DB_URI);
 
-export default sequelize;
+export const connectToDatabase = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connected to Postgres");
+  } catch (error) {
+    console.error("Failed to connect to Postgres: " + error.message);
+    return process.exit(1);
+  }
+
+  return null;
+};
