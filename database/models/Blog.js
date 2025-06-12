@@ -33,4 +33,6 @@ Blog.init(
   },
 );
 
+Blog.sync();
+
 export default Blog;
