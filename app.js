@@ -5,6 +5,7 @@ import blogRouter from "./routes/blogRouter.js";
 import { connectToDatabase } from "./database/postgres.js";
 import userRouter from "./routes/userRouter.js";
 import authRouter from "./routes/authRouter.js";
+import authorRouter from "./routes/authorRouter.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/authors", authorRouter);
 
 app.use(errorMiddleware);
 

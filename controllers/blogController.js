@@ -1,13 +1,35 @@
 import { Blog, User } from "../database/models/index.js";
+import { Op } from "sequelize";
 
 export const getBlogs = async (req, res, next) => {
   try {
+    let where = {};
+
+    if (req.query.search) {
+      where = {
+        [Op.or]: [
+          {
+            title: {
+              [Op.iLike]: `%${req.query.search}%`,
+            },
+          },
+          {
+            author: {
+              [Op.iLike]: `%${req.query.search}%`,
+            },
+          },
+        ],
+      };
+    }
+
     const blogs = await Blog.findAll({
       attributes: { exclude: ["userId"] },
       include: {
         model: User,
         attributes: ["name"],
       },
+      where,
+      order: [["likes", "DESC"]],
     });
 
     res.status(200).json({ success: true, data: blogs });
